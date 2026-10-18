@@ -10,238 +10,14 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ==========================================
-// YAHAN APNI YOUTUBE COOKIES PASTE KAREIN
-// ==========================================
-// Neeche quotes ke andar apni copy ki hui cookie paste karein
-const cookieString = "[
-	{
-		"name": "__Secure-1PAPISID",
-		"value": "FxQJsllqX_459Svh/AwIl9dh9-HTc6bvTa",
-		"domain": ".youtube.com",
-		"path": "/",
-		"expirationDate": 1826698229.119254,
-		"sameSite": "unspecified",
-		"storeId": "0",
-		"hostOnly": false,
-		"httpOnly": false,
-		"secure": true,
-		"session": false
-	},
-	{
-		"name": "__Secure-1PSID",
-		"value": "g.a000DwkQzeCoDIXbK_ca_yJMzzEBGvDAKTPQzek1O-s1jjleZ4JxRWKYY2m8ejX2VkccU1D38AACgYKASwSARISFQHGX2Mi6qh48kRRh4xiQUDIRgaOQBoVAUF8yKqOBvARu1ybphtz9WWBA4Mv0076",
-		"domain": ".youtube.com",
-		"path": "/",
-		"expirationDate": 1826698229.120069,
-		"sameSite": "unspecified",
-		"storeId": "0",
-		"hostOnly": false,
-		"httpOnly": true,
-		"secure": true,
-		"session": false
-	},
-	{
-		"name": "__Secure-1PSIDCC",
-		"value": "AKEyXzXyBaPmZ8-FzU_th1OUCU8X7Zq7_IjS25l9B128SG9D2E-yqvscRIAaStB6E5UNsGoe",
-		"domain": ".youtube.com",
-		"path": "/",
-		"expirationDate": 1823894928.898819,
-		"sameSite": "unspecified",
-		"storeId": "0",
-		"hostOnly": false,
-		"httpOnly": true,
-		"secure": true,
-		"session": false
-	},
-	{
-		"name": "__Secure-1PSIDTS",
-		"value": "sidts-CjUBkldj_10aL1FjXg-8VD9U12u_kB1NBmLDugqKmYiDvGIvVC_T2o_d4NV3ieljTU5vqnYmZxAA",
-		"domain": ".youtube.com",
-		"path": "/",
-		"expirationDate": 1823894928.897718,
-		"sameSite": "unspecified",
-		"storeId": "0",
-		"hostOnly": false,
-		"httpOnly": true,
-		"secure": true,
-		"session": false
-	},
-	{
-		"name": "__Secure-3PAPISID",
-		"value": "FxQJsllqX_459Svh/AwIl9dh9-HTc6bvTa",
-		"domain": ".youtube.com",
-		"path": "/",
-		"expirationDate": 1826698229.119515,
-		"sameSite": "no_restriction",
-		"storeId": "0",
-		"hostOnly": false,
-		"httpOnly": false,
-		"secure": true,
-		"session": false
-	},
-	{
-		"name": "__Secure-3PSID",
-		"value": "g.a000DwkQzeCoDIXbK_ca_yJMzzEBGvDAKTPQzek1O-s1jjleZ4JxczigZjY0wtYdu8EJA-h5hQACgYKAWASARISFQHGX2Mi2wC7SF97eerbsGD3JiLprRoVAUF8yKqJUJGZopQkiKzxZ_S77Ndz0076",
-		"domain": ".youtube.com",
-		"path": "/",
-		"expirationDate": 1826698229.120333,
-		"sameSite": "no_restriction",
-		"storeId": "0",
-		"hostOnly": false,
-		"httpOnly": true,
-		"secure": true,
-		"session": false
-	},
-	{
-		"name": "__Secure-3PSIDCC",
-		"value": "AKEyXzXeh3WgXiLKnhRUwQXtXbeIuXYCcEMauhiVzsQ5nzSN4VcdHVYgJpPHpCocg_FV2zna4g",
-		"domain": ".youtube.com",
-		"path": "/",
-		"expirationDate": 1823894928.899127,
-		"sameSite": "no_restriction",
-		"storeId": "0",
-		"hostOnly": false,
-		"httpOnly": true,
-		"secure": true,
-		"session": false
-	},
-	{
-		"name": "__Secure-3PSIDTS",
-		"value": "sidts-CjUBkldj_10aL1FjXg-8VD9U12u_kB1NBmLDugqKmYiDvGIvVC_T2o_d4NV3ieljTU5vqnYmZxAA",
-		"domain": ".youtube.com",
-		"path": "/",
-		"expirationDate": 1823894928.898217,
-		"sameSite": "no_restriction",
-		"storeId": "0",
-		"hostOnly": false,
-		"httpOnly": true,
-		"secure": true,
-		"session": false
-	},
-	{
-		"name": "__Secure-BUCKET",
-		"value": "CMQC",
-		"domain": ".youtube.com",
-		"path": "/",
-		"expirationDate": 1807688958.766446,
-		"sameSite": "lax",
-		"storeId": "0",
-		"hostOnly": false,
-		"httpOnly": true,
-		"secure": true,
-		"session": false
-	},
-	{
-		"name": "APISID",
-		"value": "Xez30c4tu2R3w-xi/AlTCHVXaN_DU4bTXP",
-		"domain": ".youtube.com",
-		"path": "/",
-		"expirationDate": 1826698229.118724,
-		"sameSite": "unspecified",
-		"storeId": "0",
-		"hostOnly": false,
-		"httpOnly": false,
-		"secure": false,
-		"session": false
-	},
-	{
-		"name": "HSID",
-		"value": "AN3YMxVCwrZRS_rrF",
-		"domain": ".youtube.com",
-		"path": "/",
-		"expirationDate": 1826698229.118183,
-		"sameSite": "unspecified",
-		"storeId": "0",
-		"hostOnly": false,
-		"httpOnly": true,
-		"secure": false,
-		"session": false
-	},
-	{
-		"name": "LOGIN_INFO",
-		"value": "AFmmF2swRgIhAN_QKcQYsGqG9YCh8KRIXqPoj5B4LdF0L68ZJV5wVmMOAiEAxb-j8klr7-3nUuKKDZandfAMiNb4ueXnazecVKyJ5Ys:QUQ3MjNmeGJSdGl2NkQxZV9uUmhBUWRkSVJjcDRvU0JrN01ZVi1TWUQ0cXk2Q3dNaWZ6UVoxOVhDUmhNWHpVY0ZmaXRrV2tlS1F3aEN3aFp6dl92NHp6cmQ5cUFfR2F0ampUazg3d2EtLTdqUDNMdUZVQ2k3MmpXZ1UzRE95cVpGWG8tclJJNFZ5MVdZVW9GbUZjSGtBUlZqcjBVWjJFVG93",
-		"domain": ".youtube.com",
-		"path": "/",
-		"expirationDate": 1826696962.398489,
-		"sameSite": "no_restriction",
-		"storeId": "0",
-		"hostOnly": false,
-		"httpOnly": true,
-		"secure": true,
-		"session": false
-	},
-	{
-		"name": "PREF",
-		"value": "tz=Asia.Karachi",
-		"domain": ".youtube.com",
-		"path": "/",
-		"expirationDate": 1826917720.35529,
-		"sameSite": "unspecified",
-		"storeId": "0",
-		"hostOnly": false,
-		"httpOnly": false,
-		"secure": true,
-		"session": false
-	},
-	{
-		"name": "SAPISID",
-		"value": "FxQJsllqX_459Svh/AwIl9dh9-HTc6bvTa",
-		"domain": ".youtube.com",
-		"path": "/",
-		"expirationDate": 1826698229.11899,
-		"sameSite": "unspecified",
-		"storeId": "0",
-		"hostOnly": false,
-		"httpOnly": false,
-		"secure": true,
-		"session": false
-	},
-	{
-		"name": "SID",
-		"value": "g.a000DwkQzeCoDIXbK_ca_yJMzzEBGvDAKTPQzek1O-s1jjleZ4Jx_Gbo_5FoimhkzofUryp5WAACgYKASESARISFQHGX2Miqb79XIyAuLyxgAcn9rpSWBoVAUF8yKpdS-TCnCNrBGT6a_ICU-0X0076",
-		"domain": ".youtube.com",
-		"path": "/",
-		"expirationDate": 1826698229.119799,
-		"sameSite": "unspecified",
-		"storeId": "0",
-		"hostOnly": false,
-		"httpOnly": false,
-		"secure": false,
-		"session": false
-	},
-	{
-		"name": "SIDCC",
-		"value": "AKEyXzX8CWopw2FBvqY8OCR9cdsU3KPLRCr_7a0Hu74-FPq1f8jheurD_f28CDjyutzHiyyu",
-		"domain": ".youtube.com",
-		"path": "/",
-		"expirationDate": 1823894928.89853,
-		"sameSite": "unspecified",
-		"storeId": "0",
-		"hostOnly": false,
-		"httpOnly": false,
-		"secure": false,
-		"session": false
-	},
-	{
-		"name": "SSID",
-		"value": "ALYg6rxSjrT_Yga34",
-		"domain": ".youtube.com",
-		"path": "/",
-		"expirationDate": 1826698229.11845,
-		"sameSite": "unspecified",
-		"storeId": "0",
-		"hostOnly": false,
-		"httpOnly": true,
-		"secure": true,
-		"session": false
-	}
-]"; 
-
 app.use(cors());
-
-// Public folder se static files serve karna
 app.use(express.static(path.join(__dirname, 'public')));
+
+// ==========================================
+// YAHAN AAPKI COOKIE PASTE KI GAYI HAI
+// (Jab aap nayi cookie banayenge, toh isko update kar lein)
+// ==========================================
+const cookieString = "__Secure-3PSID=g.a000DwkQzeCoDIXbK_ca_yJMzzEBGvDAKTPQzek1O-s1jjleZ4JxczigZjY0wtYdu8EJA-h5hQACgYKAWASARISFQHGX2Mi2wC7SF97eerbsGD3JiLprRoVAUF8yKqJUJGZopQkiKzxZ_S77Ndz0076; SIDCC=AKEyXzVXBHsIViRdT_wCCtXjlVevKNlPYhuNlidDkVKE9xjLNcqRgYCbwaeoUcCtzEK5LAI0; SID=g.a000DwkQzeCoDIXbK_ca_yJMzzEBGvDAKTPQzek1O-s1jjleZ4Jx_Gbo_5FoimhkzofUryp5WAACgYKASESARISFQHGX2Miqb79XIyAuLyxgAcn9rpSWBoVAUF8yKpdS-TCnCNrBGT6a_ICU-0X0076; __Secure-1PSIDTS=sidts-CjUBkldj_81xxREqIRenjFajOSF8KUJ40_ZG4ZKPMzgOyT-5TNAnjlOW2KRU7B4xihkua5TvWRAA; SAPISID=FxQJsllqX_459Svh/AwIl9dh9-HTc6bvTa; __Secure-1PSIDCC=AKEyXzUW3y-5PoYiHGV84MzjgX6rtnhvsfinJPFNRPgAstnN0wgj3xgSFgNGYT6ATVXWe5zo; SSID=ALYg6rxSjrT_Yga34; __Secure-1PAPISID=FxQJsllqX_459Svh/AwIl9dh9-HTc6bvTa; __Secure-1PSID=g.a000DwkQzeCoDIXbK_ca_yJMzzEBGvDAKTPQzek1O-s1jjleZ4JxRWKYY2m8ejX2VkccU1D38AACgYKASwSARISFQHGX2Mi6qh48kRRh4xiQUDIRgaOQBoVAUF8yKqOBvARu1ybphtz9WWBA4Mv0076; __Secure-3PAPISID=FxQJsllqX_459Svh/AwIl9dh9-HTc6bvTa; __Secure-3PSIDCC=AKEyXzV0n_vzyGX7pvzv4FRDjC9lQQSgEygtFzniCVd_ozcfkiWBBp4p9nFbTS7GmPBherp8dA; __Secure-3PSIDTS=sidts-CjUBkldj_81xxREqIRenjFajOSF8KUJ40_ZG4ZKPMzgOyT-5TNAnjlOW2KRU7B4xihkua5TvWRAA; __Secure-BUCKET=CMQC; APISID=Xez30c4tu2R3w-xi/AlTCHVXaN_DU4bTXP; HSID=AN3YMxVCwrZRS_rrF; LOGIN_INFO=AFmmF2swRgIhAN_QKcQYsGqG9YCh8KRIXqPoj5B4LdF0L68ZJV5wVmMOAiEAxb-j8klr7-3nUuKKDZandfAMiNb4ueXnazecVKyJ5Ys:QUQ3MjNmeGJSdGl2NkQxZV9uUmhBUWRkSVJjcDRvU0JrN01ZVi1TWUQ0cXk2Q3dNaWZ6UVoxOVhDUmhNWHpVY0ZmaXRrV2tlS1F3aEN3aFp6dl92NHp6cmQ5cUFfR2F0ampUazg3d2EtLTdqUDNMdUZVQ2k3MmpXZ1UzRE95cVpGWG8tclJJNFZ5MVdZVW9GbUZjSGtBUlZqcjBVWjJFVG93; PREF=tz=Asia.Karachi";
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -253,7 +29,6 @@ app.get('/api/info', async (req, res) => {
   if (!videoUrl) return res.status(400).json({ error: 'URL is required' });
 
   try {
-    // Yahan getInfo mein cookie pass ki gayi hai
     const info = await ytdl.getInfo(videoUrl, {
       requestOptions: {
         headers: {
@@ -309,7 +84,6 @@ app.get('/api/download', async (req, res) => {
     const extension = type === 'audio' ? 'mp3' : 'mp4';
     res.header('Content-Disposition', `attachment; filename="${title}.${extension}"`);
 
-    // Yahan bhi download ke waqt cookie pass ki gayi hai
     ytdl(url, { 
       quality: itag,
       requestOptions: {
