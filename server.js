@@ -22,7 +22,7 @@ const cookieString = "ST-3opvp5=session_logininfo=AFmmF2swRgIhAN_QKcQYsGqG9YCh8K
 // 2. PROXY (Screenshot wali list se li gayi hai)
 // ==========================================
 // Germany wali proxy (IP: 128.140.113.110, Port: 8081)
-const PROXY_URL = "http://128.140.113.110:8081"; 
+const PROXY_URL = "http://162.214.74.29:8085"; 
 
 // Proxy Agent banayein
 const proxyAgent = ytdl.createProxyAgent({ uri: PROXY_URL });
