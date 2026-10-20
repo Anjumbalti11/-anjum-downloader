@@ -1,14 +1,14 @@
 {
-  "name": "wasmer-media-downloader",
-  "version": "1.0.0",
-  "description": "Video Audio Downloader API for Wasmer",
+  "name": "anjum-downloader-backend",
+  "version": "19.0.0",
+  "description": "Backend API for Anjum Downloader v19",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.19.2",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
   },
   "engines": {
     "node": ">=18.x"
