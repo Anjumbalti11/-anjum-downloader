@@ -1,223 +1,222 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-theme="dark" data-lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anjum Downloader v19</title>
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+<title>Anjum Downloader</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23ff6a00'/%3E%3Cpath d='M50 20 L50 70 M30 50 L50 70 L70 50 M20 80 L80 80' stroke='white' stroke-width='8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;transition:background .3s,color .3s}
-  :root{--orange:#ff6a00;--red:#c8102e;--bg:#0a0508;--card:#15101a;--border:#2a1a1a;--text:#f0e6d2;--dim:#8a7a6a;--green:#2ecc71;--blue:#3498db}
-  html[data-theme="light"]{--bg:#f5f5f7;--card:#fff;--border:#ddd;--text:#111;--dim:#666}
-  html[data-lang="ur"] body{font-family:'Noto Nastaliq Urdu',sans-serif}
-  body{background:var(--bg);color:var(--text);min-height:100vh;padding:1rem;display:flex;justify-content:center}
-  .app{width:100%;max-width:800px;padding:1rem 0}
+  /* CSS SAME AS PREVIOUS */
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+  :root{--bg:#0a0a0f;--card:#14141d;--line:#262633;--text:#f4f4f8;--dim:#8e8e9e;--ac:#ffb300;--ac2:#ff7a00;--ok:#2ecc71;--pu:#b57edc}
+  body{background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:50px;display:flex;flex-direction:column}
   
-  .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
-  .brand{display:flex;align-items:center;gap:10px}
-  .brand-icon{width:45px;height:45px;border-radius:12px;background:linear-gradient(135deg,var(--orange),var(--red));display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem}
-  .brand h1{font-size:1.2rem;font-weight:900;background:linear-gradient(135deg,var(--orange),#f0c000);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-  .brand span{font-size:0.6rem;color:var(--dim);letter-spacing:1px}
-  .controls{display:flex;gap:0.5rem}
-  .btn-ctrl{background:var(--card);border:1px solid var(--border);color:var(--text);padding:0.5rem 0.8rem;border-radius:2rem;cursor:pointer;font-size:0.7rem;font-weight:700;display:flex;align-items:center;gap:5px}
+  .top-bar{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:var(--bg);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--line)}
+  .menu-btn{font-size:1.5rem;color:var(--ac);cursor:pointer;background:none;border:none}
+  .logo{font:900 1.2rem Impact,sans-serif;transform:skewX(-8deg)}
+  .logo b{color:var(--ac)}
+
+  .sidebar{position:fixed;top:0;left:-250px;width:250px;height:100vh;background:var(--card);z-index:1000;transition:left 0.3s ease;box-shadow:5px 0 15px rgba(0,0,0,0.5);padding-top:20px}
+  .sidebar.open{left:0}
+  .sidebar-header{display:flex;justify-content:space-between;align-items:center;padding:0 20px 20px;border-bottom:1px solid var(--line)}
+  .sidebar-header h2{font-size:1.2rem;color:var(--ac)}
+  .close-btn{font-size:1.2rem;color:var(--dim);cursor:pointer;background:none;border:none}
+  .sidebar-links{padding:20px 10px;display:flex;flex-direction:column;gap:5px}
+  .sidebar-links a{display:flex;align-items:center;gap:10px;padding:12px 15px;color:var(--text);text-decoration:none;border-radius:8px;font-weight:600;font-size:0.95rem;transition:0.2s}
+  .sidebar-links a:hover{background:var(--bg);color:var(--ac)}
+  .sidebar-links a i{width:20px;text-align:center;color:var(--dim)}
+  .sidebar-links a.active{background:rgba(255,179,0,0.1);color:var(--ac)}
+
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:999;display:none}
+  .overlay.open{display:block}
+
+  .container{max-width:700px;margin:0 auto;padding:20px;width:100%}
+  .input-box{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:30px;box-shadow:0 10px 30px rgba(0,0,0,0.5)}
+  .input-box p{font-size:13px;color:var(--dim);margin-bottom:10px;text-align:center}
+  textarea{width:100%;height:70px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:15px;color:var(--text);font-size:14px;resize:none;outline:none;margin-bottom:10px}
+  textarea:focus{border-color:var(--ac)}
+  .btn-get{width:100%;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#000;padding:15px;border-radius:12px;border:none;font-weight:900;font-size:1rem;cursor:pointer;display:flex;justify-content:center;align-items:center;gap:8px}
+  .btn-get:disabled{opacity:0.5;cursor:not-allowed}
   
-  .hero{text-align:center;margin-bottom:1.5rem}
-  .hero h2{font-size:1.5rem;font-weight:900;margin-bottom:0.3rem}
-  .hero h2 span{color:var(--orange)}
-  .hero p{color:var(--dim);font-size:0.85rem}
-  
-  .search-box{background:var(--card);border:1px solid var(--border);border-radius:1.2rem;padding:1rem;display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
-  .search-box input{flex:1;min-width:200px;background:var(--bg);border:1px solid var(--border);border-radius:0.8rem;padding:1rem;color:var(--text);font-size:0.9rem;outline:none}
-  .search-box input:focus{border-color:var(--orange)}
-  .search-box button{background:linear-gradient(135deg,var(--orange),var(--red));border:none;color:#fff;padding:0 1.5rem;border-radius:0.8rem;font-weight:800;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;gap:5px}
-  
-  .result{display:none;background:var(--card);border:1px solid var(--border);border-radius:1.2rem;overflow:hidden}
-  .result.show{display:block;animation:fadeIn .3s}
-  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-  
-  .poster{position:relative;width:100%;aspect-ratio:16/9;background:#000}
-  .poster img{width:100%;height:100%;object-fit:cover}
-  .poster-info{position:absolute;bottom:0;left:0;right:0;padding:2rem 1rem 1rem;background:linear-gradient(transparent,rgba(0,0,0,0.9))}
-  .poster-title{color:#fff;font-size:1rem;font-weight:800;margin-bottom:0.3rem}
-  .poster-meta{color:#ccc;font-size:0.75rem}
-  
-  .tabs{display:flex;border-bottom:1px solid var(--border)}
-  .tab{flex:1;padding:1rem;text-align:center;font-size:0.8rem;font-weight:800;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent}
-  .tab.active{color:var(--orange);border-bottom-color:var(--orange)}
-  
-  .formats{padding:1rem;display:flex;flex-direction:column;gap:0.5rem;max-height:300px;overflow-y:auto}
-  .fmt-row{display:flex;justify-content:space-between;align-items:center;background:var(--bg);padding:0.8rem 1rem;border-radius:0.8rem;border:1px solid var(--border)}
-  .fmt-info{font-weight:700;font-size:0.85rem}
-  .fmt-size{font-size:0.7rem;color:var(--dim);font-weight:normal;display:block;margin-top:2px}
-  .dl-btn{background:var(--green);border:none;color:#fff;padding:0.5rem 1rem;border-radius:2rem;font-size:0.75rem;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px}
-  
-  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--card);border:1px solid var(--orange);padding:0.8rem 1.5rem;border-radius:2rem;font-size:0.8rem;font-weight:600;transition:0.3s;z-index:999}
+  .loader{display:none;text-align:center;padding:20px;color:var(--ac)}
+  .loader i{font-size:2rem;margin-bottom:10px;animation:spin 1s linear infinite}
+  @keyframes spin{100%{transform:rotate(360deg)}}
+
+  .result{display:none;background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;margin-bottom:30px}
+  .thumb{width:100%;aspect-ratio:16/9;background:#000;position:relative}
+  .thumb img{width:100%;height:100%;object-fit:cover}
+  .thumb h3{position:absolute;bottom:0;left:0;right:0;padding:20px 15px 10px;background:linear-gradient(transparent,#000);color:#fff;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .btns{display:flex;gap:10px;padding:15px}
+  .btn-dl{flex:1;padding:12px;border-radius:10px;text-decoration:none;text-align:center;font-weight:800;font-size:13px;display:flex;justify-content:center;align-items:center;gap:5px}
+  .btn-mp4{background:var(--ok);color:#fff}
+  .btn-mp3{background:var(--pu);color:#fff}
+
+  .saved-section{margin-top:20px}
+  .saved-section h2{font-size:18px;margin-bottom:15px;color:var(--ac);display:flex;align-items:center;gap:8px}
+  .saved-list{display:flex;flex-direction:column;gap:10px}
+  .saved-item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;align-items:center;gap:12px}
+  .saved-item img{width:80px;height:50px;object-fit:cover;border-radius:8px}
+  .saved-item div{flex:1;min-width:0}
+  .saved-item h4{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:5px}
+  .saved-item a{font-size:11px;color:var(--ok);text-decoration:none;font-weight:700;margin-right:10px}
+  .saved-item .del{color:#ff4d4d;cursor:pointer;font-size:14px}
+
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--card);border:1px solid var(--ac);padding:12px 24px;border-radius:30px;font-size:14px;font-weight:700;transition:0.3s;z-index:999}
   .toast.show{transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
-<div class="app">
-  <div class="header">
-    <div class="brand">
-      <div class="brand-icon"><i class="fas fa-bolt"></i></div>
-      <div>
-        <h1>AnjumDownloader</h1>
-        <span id="t_sub">V19 · ULTIMATE</span>
-      </div>
-    </div>
-    <div class="controls">
-      <button class="btn-ctrl" onclick="toggleLang()" id="langBtn">اردو</button>
-      <button class="btn-ctrl" onclick="toggleTheme()" id="themeBtn"><i class="fas fa-moon"></i></button>
-    </div>
-  </div>
 
-  <div class="hero">
-    <h2 id="t_hero">Downnload Media <span>Video & Audio</span></h2>
-  </div>
+<div class="top-bar">
+  <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+  <div class="logo">ANJUM<b>DOWNLOADER</b></div>
+</div>
 
-  <div class="search-box">
-    <input type="text" id="urlInput" placeholder="Paste media link here..." />
-    <button onclick="handleDownload()" id="mainBtn"><i class="fas fa-download"></i> <span id="t_btn">Download</span></button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h2>Menu</h2>
+    <button class="close-btn" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
   </div>
-
-  <div class="result" id="resultBox">
-    <div class="poster">
-      <img id="posterImg" src="" alt="poster">
-      <div class="poster-info">
-        <div class="poster-title" id="posterTitle"></div>
-        <div class="poster-meta" id="posterMeta"></div>
-      </div>
-    </div>
-    <div class="tabs">
-      <div class="tab active" onclick="switchTab('video')" id="tabVid"><i class="fas fa-video"></i> <span id="t_vid">Video</span></div>
-      <div class="tab" onclick="switchTab('audio')" id="tabAud"><i class="fas fa-music"></i> <span id="t_aud">Audio</span></div>
-    </div>
-    <div class="formats" id="fmtList"></div>
+  <div class="sidebar-links">
+    <a href="#" class="active"><i class="fas fa-download"></i> Social Downloader</a>
+    <a href="https://anjumstream.site.je/" target="_blank"><i class="fas fa-play-circle"></i> Go to AnjumStream</a>
+    <a href="#" onclick="showToast('Coming soon!')"><i class="fas fa-history"></i> History</a>
+    <a href="#" onclick="showToast('Coming soon!')"><i class="fas fa-cog"></i> Settings</a>
   </div>
 </div>
 
-<div class="toast" id="toast">Done</div>
+<div class="container">
+  <div class="input-box">
+    <p>Paste TikTok, Instagram, Facebook, Vimeo, ya Direct MP4 link</p>
+    <textarea id="urlInput" placeholder="Example: https://vm.tiktok.com/... ya https://instagram.com/reel/..."></textarea>
+    <button class="btn-get" id="mainBtn" onclick="processMedia()"><i class="fas fa-bolt"></i> Generate Download Links</button>
+  </div>
+
+  <div class="loader" id="loader">
+    <i class="fas fa-circle-notch"></i>
+    <p>Fetching high-quality links...</p>
+  </div>
+
+  <div class="result" id="resultBox">
+    <div class="thumb">
+      <img id="resThumb" src="" alt="Thumb">
+      <h3 id="resTitle">Title</h3>
+    </div>
+    <div class="btns">
+      <a href="#" id="dlMp4" target="_blank" class="btn-dl btn-mp4"><i class="fas fa-video"></i> Save Video</a>
+      <a href="#" id="dlMp3" target="_blank" class="btn-dl btn-mp3"><i class="fas fa-music"></i> Save Audio</a>
+    </div>
+  </div>
+
+  <div class="saved-section">
+    <h2><i class="fas fa-bookmark"></i> My Saved Media</h2>
+    <div class="saved-list" id="savedList"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Message</div>
 
 <script>
-const API = '';
-let currentData = null;
-let currentType = 'video';
-let lang = localStorage.getItem('lang') || 'en';
-let theme = localStorage.getItem('theme') || 'dark';
+// 🔴 YAHAN APNA NAYA WASMER URL DALEIN 🔴
+const API_URL = 'https://anjum-downloader313.wasmer.app'; 
 
-const i18n = {
-  en: { sub:'V19 · ULTIMATE', hero:'Media <span>Video & Audio</span>', btn:'Download', vid:'Video', aud:'Audio' },
-  ur: { sub:'ویژن 19', hero:'یوٹیوب <span>ویڈیو اور آڈیو</span> ڈاؤن لوڈ کریں', btn:'ڈاؤن لوڈ', vid:'ویڈیو', aud:'آڈیو' }
-};
+let savedMedia = JSON.parse(localStorage.getItem('anjum_saved_media') || '[]');
 
-function applySettings() {
-  document.documentElement.setAttribute('data-lang', lang);
-  document.documentElement.setAttribute('data-theme', theme);
-  document.documentElement.dir = lang === 'ur' ? 'rtl' : 'ltr';
-  
-  document.getElementById('t_sub').innerText = i18n[lang].sub;
-  document.getElementById('t_hero').innerHTML = i18n[lang].hero;
-  document.getElementById('t_btn').innerText = i18n[lang].btn;
-  document.getElementById('t_vid').innerText = i18n[lang].vid;
-  document.getElementById('t_aud').innerText = i18n[lang].aud;
-  document.getElementById('langBtn').innerText = lang === 'en' ? 'اردو' : 'English';
-  document.getElementById('themeBtn').innerHTML = theme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('open');
 }
 
-function toggleLang() { lang = lang === 'en' ? 'ur' : 'en'; localStorage.setItem('lang', lang); applySettings(); }
-function toggleTheme() { theme = theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('theme', theme); applySettings(); }
-
-async function handleDownload() {
-  const url = document.getElementById('urlInput').value.trim();
-  if (!url) { showToast('Paste a URL first'); return; }
-
-  const btn = document.getElementById('mainBtn');
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-  btn.disabled = true;
-
-  try {
-    const res = await fetch(API + '/api/info?url=' + encodeURIComponent(url));
-    const data = await res.json();
-    
-    if (data.error) throw new Error(data.error);
-
-    currentData = data;
-    renderResult(data);
-    
-  } catch (e) {
-    showToast('❌ ' + e.message);
-  } finally {
-    btn.innerHTML = '<i class="fas fa-download"></i> <span id="t_btn">' + i18n[lang].btn + '</span>';
-    btn.disabled = false;
-  }
-}
-
-function renderResult(data) {
-  document.getElementById('resultBox').classList.add('show');
-  document.getElementById('posterImg').src = data.thumbnail;
-  document.getElementById('posterTitle').innerText = data.title;
-  document.getElementById('posterMeta').innerText = data.uploader + ' · ' + formatTime(data.duration);
-  
-  renderFormats('video');
-}
-
-function switchTab(type) {
-  currentType = type;
-  document.getElementById('tabVid').classList.toggle('active', type === 'video');
-  document.getElementById('tabAud').classList.toggle('active', type === 'audio');
-  renderFormats(type);
-}
-
-function renderFormats(type) {
-  if (!currentData) return;
-  const list = document.getElementById('fmtList');
-  
-  if (type === 'video') {
-    const fmts = currentData.videoFormats || [];
-    if (fmts.length === 0) { list.innerHTML = '<div style="text-align:center;padding:1rem;color:var(--dim)">No video formats found</div>'; return; }
-    
-    list.innerHTML = fmts.map(f => `
-      <div class="fmt-row">
-        <div class="fmt-info">${f.quality}
-          <span class="fmt-size">${f.size ? (f.size / 1024 / 1024).toFixed(1) + ' MB' : '~'}</span>
+function renderSaved() {
+    const list = document.getElementById('savedList');
+    if (savedMedia.length === 0) {
+        list.innerHTML = '<p style="color:var(--dim);font-size:12px;">Koi media save nahi kiya gaya.</p>';
+        return;
+    }
+    list.innerHTML = savedMedia.map((item, index) => `
+        <div class="saved-item">
+            <img src="${item.thumb}" alt="thumb">
+            <div>
+                <h4>${item.title}</h4>
+                <a href="${item.video_url}" target="_blank">⬇ Video</a>
+                ${item.audio_url ? `<a href="${item.audio_url}" target="_blank" style="color:var(--pu)">⬇ Audio</a>` : ''}
+            </div>
+            <i class="fas fa-trash del" onclick="deleteSaved(${index})"></i>
         </div>
-        <button class="dl-btn" onclick="directDownload('${f.itag}', 'video')"><i class="fas fa-download"></i> Download</button>
-      </div>
     `).join('');
-  } else {
-    const fmts = currentData.audioFormats || [];
-    if (fmts.length === 0) { list.innerHTML = '<div style="text-align:center;padding:1rem;color:var(--dim)">No audio formats found</div>'; return; }
+}
+
+function deleteSaved(index) {
+    savedMedia.splice(index, 1);
+    localStorage.setItem('anjum_saved_media', JSON.stringify(savedMedia));
+    renderSaved();
+}
+
+async function processMedia() {
+    const url = document.getElementById('urlInput').value.trim();
+    if (!url) return showToast('⚠️ Paste a link first!');
     
-    list.innerHTML = fmts.map(f => `
-      <div class="fmt-row">
-        <div class="fmt-info">${f.quality}
-          <span class="fmt-size">${f.size ? (f.size / 1024 / 1024).toFixed(1) + ' MB' : '~'}</span>
-        </div>
-        <button class="dl-btn" style="background:var(--blue)" onclick="directDownload('${f.itag}', 'audio')"><i class="fas fa-download"></i> Download</button>
-      </div>
-    `).join('');
-  }
-}
+    if(url.includes('youtube.com') || url.includes('youtu.be')) {
+        return showToast('❌ YouTube links are not supported here.');
+    }
 
-function directDownload(itag, type) {
-  const url = document.getElementById('urlInput').value.trim();
-  const dlUrl = API + `/api/download?url=${encodeURIComponent(url)}&itag=${itag}&type=${type}`;
-  
-  const a = document.createElement('a');
-  a.href = dlUrl;
-  a.download = '';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  
-  showToast('Download started...');
-}
+    const btn = document.getElementById('mainBtn');
+    const loader = document.getElementById('loader');
+    const resBox = document.getElementById('resultBox');
 
-function formatTime(sec) {
-  const m = Math.floor(sec / 60), s = sec % 60;
-  return m + ':' + String(s).padStart(2, '0');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Please wait...';
+    loader.style.display = 'block';
+    resBox.style.display = 'none';
+
+    try {
+        let endpoint = '/api/social'; // Default for TikTok/Insta
+        if (url.endsWith('.mp4') || url.endsWith('.mp3')) {
+            endpoint = '/api/direct';
+        }
+
+        const res = await fetch(`${API_URL}${endpoint}?url=${encodeURIComponent(url)}`);
+        const data = await res.json();
+
+        if (data.error) throw new Error(data.error);
+
+        document.getElementById('resThumb').src = data.thumbnail || 'https://via.placeholder.com/600x300?text=No+Thumbnail';
+        document.getElementById('resTitle').innerText = data.title || 'Media File';
+        
+        document.getElementById('dlMp4').href = data.video_url || '#';
+        document.getElementById('dlMp3').href = data.audio_url || '#';
+
+        if(!data.audio_url) document.getElementById('dlMp3').style.display = 'none';
+        else document.getElementById('dlMp3').style.display = 'flex';
+
+        if(!data.video_url) document.getElementById('dlMp4').style.display = 'none';
+        else document.getElementById('dlMp4').style.display = 'flex';
+
+        resBox.style.display = 'block';
+
+        const newItem = {
+            title: data.title || 'Media File',
+            thumb: data.thumbnail || 'https://via.placeholder.com/150',
+            video_url: data.video_url,
+            audio_url: data.audio_url
+        };
+        savedMedia.unshift(newItem);
+        if(savedMedia.length > 10) savedMedia.pop();
+        localStorage.setItem('anjum_saved_media', JSON.stringify(savedMedia));
+        renderSaved();
+        
+        showToast('✅ Media Saved!');
+
+    } catch (e) {
+        showToast('❌ Error: ' + e.message);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-bolt"></i> Generate Download Links';
+        loader.style.display = 'none';
+    }
 }
 
 let toastTimer;
@@ -226,12 +225,10 @@ function showToast(msg) {
   t.innerText = msg;
   t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
 }
 
-// Init
-applySettings();
-document.getElementById('urlInput').addEventListener('keydown', e => { if (e.key === 'Enter') handleDownload(); });
+renderSaved();
 </script>
 </body>
 </html>
