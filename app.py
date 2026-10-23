@@ -2,23 +2,20 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import yt_dlp
 import os
-import traceback
 
 app = Flask(__name__)
-CORS(app)  # Yeh InfinityFree wali website se connect hone ke liye zaroori hai
+CORS(app)
 
 @app.route('/')
 def home():
     return "Anjum All-in-One Downloader API is Live!"
 
-# Saare media (TikTok, Insta, FB, MP4) ke liye ek hi endpoint
 @app.route('/api/download')
 def download_media():
     url = request.args.get('url')
     if not url:
         return jsonify({'error': 'URL required'}), 400
 
-    # 1. Agar user direct .mp4 ya .mp3 ka link daalta hai
     if url.endswith('.mp4') or url.endswith('.mp3') or url.endswith('.m3u8'):
         return jsonify({
             'success': True,
@@ -28,26 +25,23 @@ def download_media():
             'audio_url': ''
         })
 
-    # 2. Cookies ka path (Instagram/FB ke block se bachne ke liye)
     cookie_path = '/app/cookies.txt' if os.path.exists('/app/cookies.txt') else 'cookies.txt'
 
-    # 3. yt-dlp ki settings (Bot protection bypass)
     ydl_opts = {
         'format': 'best',
         'quiet': True,
         'no_warnings': True,
         'nocheckcertificate': True,
-        # 'chrome-131' browser ki tarah behave karega (curl_cffi library ke zariye)
-        'impersonate': 'chrome-131', 
+        'http_headers': {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        },
         'extractor_args': {
             'tiktok': {
-                # TikTok Mobile API (No watermark ke liye)
                 'app_info': ['7355728856979392262/trill/34.5.0/340500/1180'] 
             }
         }
     }
 
-    # Agar cookies file mojood hai toh use karein
     if os.path.exists(cookie_path):
         ydl_opts['cookiefile'] = cookie_path
 
@@ -59,18 +53,15 @@ def download_media():
             video_url = ''
             audio_url = ''
             
-            # Direct video URL
             if info.get('url'):
                 video_url = info['url']
             
-            # Formats se best MP4 aur Audio nikalna
             elif formats:
                 for f in formats:
                     if f.get('ext') == 'mp4' and f.get('vcodec') != 'none' and f.get('url'):
                         video_url = f['url']
                         break
                 
-                # Agar MP4 na mile toh koi bhi video stream le lein
                 if not video_url:
                     for f in formats:
                         if f.get('vcodec') != 'none' and f.get('url'):
@@ -94,11 +85,6 @@ def download_media():
             })
             
     except Exception as e:
-        # Agar koi error aaye toh traceback print karein (Wasmer logs mein dekhne ke liye)
-        print(f"Error: {str(e)}")
-        print(traceback.format_exc())
-        
-        # Frontend ko JSON error bhejein taake app crash na ho
         return jsonify({'error': f'Download failed: {str(e)}'}), 500
 
 if __name__ == '__main__':
