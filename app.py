@@ -1,15 +1,27 @@
-from flask import Flask, request, jsonify
+import os
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import yt_dlp
-import os
 
 app = Flask(__name__)
 CORS(app)
 
+# Folder ka path set karein
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# 1. Home Route (Yahan HTML load hoga)
 @app.route('/')
 def home():
-    return "Anjum All-in-One Downloader API is Live!"
+    # Check karein ke public folder mein index.html hai ya nahi
+    if os.path.exists(os.path.join(BASE_DIR, 'public', 'index.html')):
+        return send_from_directory(os.path.join(BASE_DIR, 'public'), 'index.html')
+    # Agar root mein index.html hai toh wahan se uthaye
+    elif os.path.exists(os.path.join(BASE_DIR, 'index.html')):
+        return send_from_directory(BASE_DIR, 'index.html')
+    
+    return "Anjum Downloader API is Live! (UI not found)"
 
+# 2. API Route (Download links nikalne ke liye)
 @app.route('/api/download')
 def download_media():
     url = request.args.get('url')
@@ -55,19 +67,16 @@ def download_media():
             
             if info.get('url'):
                 video_url = info['url']
-            
             elif formats:
                 for f in formats:
                     if f.get('ext') == 'mp4' and f.get('vcodec') != 'none' and f.get('url'):
                         video_url = f['url']
                         break
-                
                 if not video_url:
                     for f in formats:
                         if f.get('vcodec') != 'none' and f.get('url'):
                             video_url = f['url']
                             break
-
                 for f in formats:
                     if f.get('acodec') != 'none' and f.get('vcodec') == 'none' and f.get('url'):
                         audio_url = f['url']
