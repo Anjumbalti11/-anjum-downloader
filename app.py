@@ -1,17 +1,33 @@
+import os
+import traceback
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import yt_dlp
-import os
 
 app = Flask(__name__, static_folder='public', static_url_path='')
 CORS(app)
 
-# 1. Main Page (HTML load karega)
 @app.route('/')
 def home():
-    return send_from_directory('public', 'index.html')
+    try:
+        # Debugging ke liye: Check karein ke file kahan hai
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        public_dir = os.path.join(current_dir, 'public')
+        file_path = os.path.join(public_dir, 'index.html')
+        
+        print(f"Looking for file at: {file_path}")
+        
+        if os.path.exists(file_path):
+            return send_from_directory(public_dir, 'index.html')
+        else:
+            # Agar file nahi mili, toh error message bhejein
+            return f"Error: index.html not found at {file_path}", 404
+            
+    except Exception as e:
+        # Agar koi aur error aaye, toh traceback print karein
+        print(traceback.format_exc())
+        return "An internal error occurred while serving the homepage.", 500
 
-# 2. API Endpoint (Video download links nikalega)
 @app.route('/api/download')
 def download_media():
     url = request.args.get('url')
@@ -84,6 +100,7 @@ def download_media():
             })
             
     except Exception as e:
+        print(traceback.format_exc())
         return jsonify({'error': f'Download failed: {str(e)}'}), 500
 
 if __name__ == '__main__':
