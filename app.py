@@ -11,25 +11,33 @@ CORS(app)
 def home():
     return "Anjum Social Media Downloader API is Live!"
 
-@app.route('/api/download')
-def download_video():
+# Frontend jab normal video (TikTok/Insta) bhejega
+@app.route('/api/social')
+def social_download():
+    return process_video(request.args.get('url'))
+
+# Frontend jab direct .mp4/.mp3 link bhejega
+@app.route('/api/direct')
+def direct_download():
     url = request.args.get('url')
     if not url:
         return jsonify({'error': 'URL required'}), 400
+    return jsonify({
+        'success': True,
+        'title': 'Direct Media File',
+        'thumbnail': 'https://cdn-icons-png.flaticon.com/512/716/716784.png',
+        'video_url': url,
+        'audio_url': ''
+    })
 
-    # Direct MP4 / MP3 link handle karein
-    if url.endswith('.mp4') or url.endswith('.mp3'):
-        return jsonify({
-            'success': True,
-            'title': 'Direct Media File',
-            'thumbnail': 'https://cdn-icons-png.flaticon.com/512/716/716784.png',
-            'video_url': url,
-            'audio_url': ''
-        })
+# Dono ke liye main process (TikTok/Insta)
+def process_video(url):
+    if not url:
+        return jsonify({'error': 'URL required'}), 400
 
+    # TikTok error fix aur Insta cookies
     cookie_path = '/app/cookies.txt' if os.path.exists('/app/cookies.txt') else 'cookies.txt'
-
-    # yt-dlp Options (TikTok ke liye Mobile API)
+    
     ydl_opts = {
         'format': 'best',
         'quiet': True,
@@ -37,7 +45,6 @@ def download_video():
         'nocheckcertificate': True,
         'extractor_args': {
             'tiktok': {
-                # IID (Install ID) format mein dalna zaroori hai
                 'app_info': ['7355728856979392262/trill/34.5.0/340500/1180'] 
             }
         }
@@ -67,7 +74,7 @@ def download_video():
                         break
             
             if not video_url:
-                return jsonify({'error': 'Video link nahi mila. Link private ho sakta hai.'}), 400
+                return jsonify({'error': 'Video link nahi mila. Private ho sakta hai.'}), 400
 
             return jsonify({
                 'success': True,
@@ -78,11 +85,7 @@ def download_video():
             })
             
     except Exception as e:
-        # Agar yt-dlp crash ho jaye toh JSON mein error bhejein
-        error_msg = str(e)
-        print(f"Error: {error_msg}")
-        print(traceback.format_exc())
-        return jsonify({'error': f'Download failed: {error_msg}'}), 500
+        return jsonify({'error': f'Download failed: {str(e)}'}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
