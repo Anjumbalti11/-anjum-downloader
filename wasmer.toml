@@ -1,7 +1,0 @@
-[package]
-name = "anjum-downloader"
-version = "0.1.0"
-description = "Anjum Social Media Downloader"
-
-[dependencies]
-"wasmer/python" = "^3.12.6"
