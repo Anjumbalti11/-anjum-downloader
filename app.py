@@ -1,34 +1,24 @@
-import os
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import yt_dlp
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='public', static_url_path='')
 CORS(app)
 
-# Folder ka path set karein
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# 1. Home Route (Yahan HTML load hoga)
+# 1. Main Page (HTML load karega)
 @app.route('/')
 def home():
-    # Check karein ke public folder mein index.html hai ya nahi
-    if os.path.exists(os.path.join(BASE_DIR, 'public', 'index.html')):
-        return send_from_directory(os.path.join(BASE_DIR, 'public'), 'index.html')
-    # Agar root mein index.html hai toh wahan se uthaye
-    elif os.path.exists(os.path.join(BASE_DIR, 'index.html')):
-        return send_from_directory(BASE_DIR, 'index.html')
-    
-    return "Anjum Downloader API is Live! (UI not found)"
+    return send_from_directory('public', 'index.html')
 
-# 2. API Route (Download links nikalne ke liye)
+# 2. API Endpoint (Video download links nikalega)
 @app.route('/api/download')
 def download_media():
     url = request.args.get('url')
     if not url:
         return jsonify({'error': 'URL required'}), 400
 
-    if url.endswith('.mp4') or url.endswith('.mp3') or url.endswith('.m3u8'):
+    if url.endswith('.mp4') or url.endswith('.mp3'):
         return jsonify({
             'success': True,
             'title': 'Direct Media File',
