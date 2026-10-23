@@ -1,9 +1,0 @@
-kind: wasmer.io/App.v0
-name: anjum-downloader
-package: .
-cli_args:
-  - -m
-  - gunicorn
-  - --bind
-  - 0.0.0.0:8080
-  - app:app
