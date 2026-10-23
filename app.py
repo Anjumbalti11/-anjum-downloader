@@ -3,7 +3,6 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import yt_dlp
 
-# Base path set karein
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__, static_folder=os.path.join(BASE_DIR, 'public'), static_url_path='')
@@ -23,7 +22,6 @@ def download_media():
     if not url:
         return jsonify({'error': 'URL required'}), 400
 
-    # Agar direct video/audio link ho
     if url.endswith('.mp4') or url.endswith('.mp3'):
         return jsonify({
             'success': True,
@@ -37,13 +35,13 @@ def download_media():
         'format': 'best',
         'quiet': True,
         'no_warnings': True,
-        'nocheckcertificate': True,
+        'nocheckcertificate': True, # SSL Fix
         'http_headers': {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
         },
         'extractor_args': {
             'tiktok': {
-                'app_info': ['7355728856979392262/trill/34.5.0/340500/1180'] 
+                'app_info': ['7355728856979392262/trill/34.5.0/340500/1180']
             }
         }
     }
@@ -78,6 +76,7 @@ def download_media():
             })
             
     except Exception as e:
+        # Agar SSL ya koi aur error aaye, toh app crash na ho
         return jsonify({'error': f'Download failed: {str(e)}'}), 500
 
 if __name__ == '__main__':
