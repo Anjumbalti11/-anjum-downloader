@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import yt_dlp
 import os
+import traceback
 
 app = Flask(__name__)
 CORS(app)
@@ -26,24 +27,22 @@ def download_video():
             'audio_url': ''
         })
 
-    # Cookies file (agar mojood ho toh Instagram/FB ke liye)
     cookie_path = '/app/cookies.txt' if os.path.exists('/app/cookies.txt') else 'cookies.txt'
 
-    # yt-dlp Options
+    # yt-dlp Options (TikTok ke liye Mobile API)
     ydl_opts = {
         'format': 'best',
         'quiet': True,
         'no_warnings': True,
         'nocheckcertificate': True,
-        # TikTok ke liye Mobile API force karein (Webpage error fix)
         'extractor_args': {
             'tiktok': {
-                'app_info': ['7355728856979392262'] # Ek random IID (Install ID)
+                # IID (Install ID) format mein dalna zaroori hai
+                'app_info': ['7355728856979392262/trill/34.5.0/340500/1180'] 
             }
         }
     }
 
-    # Agar cookies file mojood hai toh use karein (Instagram block se bachne ke liye)
     if os.path.exists(cookie_path):
         ydl_opts['cookiefile'] = cookie_path
 
@@ -52,7 +51,6 @@ def download_video():
             info = ydl.extract_info(url, download=False)
             formats = info.get('formats', [])
             
-            # Best Video aur Audio nikalne ki logic
             video_url = ''
             audio_url = ''
             
@@ -69,7 +67,7 @@ def download_video():
                         break
             
             if not video_url:
-                return jsonify({'error': 'Video link not found. Link private ho sakta hai.'}), 400
+                return jsonify({'error': 'Video link nahi mila. Link private ho sakta hai.'}), 400
 
             return jsonify({
                 'success': True,
@@ -80,7 +78,11 @@ def download_video():
             })
             
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        # Agar yt-dlp crash ho jaye toh JSON mein error bhejein
+        error_msg = str(e)
+        print(f"Error: {error_msg}")
+        print(traceback.format_exc())
+        return jsonify({'error': f'Download failed: {error_msg}'}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
