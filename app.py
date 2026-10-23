@@ -35,14 +35,8 @@ def download_media():
         'quiet': True,
         'no_warnings': True,
         'nocheckcertificate': True,
-        'proxy': '', # Proxy bypass force karein
         'http_headers': {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-        },
-        'extractor_args': {
-            'tiktok': {
-                'app_info': ['7355728856979392262/trill/34.5.0/340500/1180']
-            }
         }
     }
 
