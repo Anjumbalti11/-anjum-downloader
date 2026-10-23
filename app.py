@@ -1,7 +1,12 @@
 import os
+import certifi
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import yt_dlp
+
+# Certifi ka path set karein
+os.environ['SSL_CERT_FILE'] = certifi.where()
+os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -35,7 +40,7 @@ def download_media():
         'format': 'best',
         'quiet': True,
         'no_warnings': True,
-        'nocheckcertificate': True, # SSL Fix
+        'nocheckcertificate': True,
         'http_headers': {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
         },
@@ -76,7 +81,6 @@ def download_media():
             })
             
     except Exception as e:
-        # Agar SSL ya koi aur error aaye, toh app crash na ho
         return jsonify({'error': f'Download failed: {str(e)}'}), 500
 
 if __name__ == '__main__':
